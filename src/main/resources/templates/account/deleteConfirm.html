@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
+</head>
+<body>
+<div class="row">
+    <div class="large12 columns" th:object="${accountForm}">
+        <h1>Account Delete</h1>
+
+        <form method="post" th:action="@{/account/delete}">
+            <div class="small-8 columns">
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="firstName.value" class="right inline">First Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${account.firstName.value}">aa</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="lastName.value" class="right inline">Last Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${account.lastName.value}">aa</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="email.value" class="right inline">Email</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${account.email.value}">aa</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="birthDate.value" class="right inline">Birth Date</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${account.birthDate.value}">aa</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="roles" class="right inline">Roles</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="inline-list">
+                            <li th:each="role : ${roleList}">
+                                <input type="checkbox" th:value="${role}" disabled="disabled"
+                                       th:checked="${#arrays.contains(account.roles, role)}? 'checked'"/>
+                                <label th:text="${role}">Admin</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="birthDate.value" class="right inline">Account State</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${account.accountState}">ENABLED</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="hidden" name="accountId" th:value="${account.accountId}"/>
+                        <ul class="button-group round">
+                            <li>
+                                <a th:href="@{/account}" class="button tiny">Back to List</a>
+                            </li>
+                            <li>
+                                <input type="submit" class="button tiny alert" value="Delete"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

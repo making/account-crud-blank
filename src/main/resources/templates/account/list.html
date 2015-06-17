@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
+</head>
+<body>
+<div class="row">
+    <div class="large12 columns">
+        <h1>Account List</h1>
+
+        <p>
+            <a th:href="@{/account/create(form)}" class="button tiny">Create New Account</a>
+        </p>
+        <table>
+            <thead>
+            <tr>
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>BirthDate</th>
+                <th>Roles</th>
+                <th>State</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="account : ${page.content}">
+                <td th:text="${account.accountId}"></td>
+                <td th:text="${account.firstName + ' ' + account.lastName}"></td>
+                <td th:text="${account.email}"></td>
+                <td th:text="${account.birthDate.value}"></td>
+                <td>
+                    <span th:each="role : ${account.roles}" th:text="${role}" class="label secondary">USER</span>
+                </td>
+                <td>
+                    <span th:text="${account.accountState}" class="label"></span>
+                </td>
+                <td>
+                    <ul class="button-group round">
+                        <li><a th:href="@{/account/update(form,accountId=${account.accountId})}" class="button tiny">Update</a>
+                        </li>
+                        <li><a th:href="@{/account/delete(confirm,accountId=${account.accountId})}"
+                               class="button tiny alert">Delete</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

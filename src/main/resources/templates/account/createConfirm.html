@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
+</head>
+<body>
+<div class="row">
+    <div class="large12 columns" th:object="${accountForm}">
+        <h1>Account Form</h1>
+
+        <form method="post" th:action="@{/account/create}">
+            <div class="small-8 columns">
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="firstName.value" class="right inline">First Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${accountForm.firstName.value}">aa</p>
+                        <input type="hidden" th:field="*{firstName.value}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="lastName.value" class="right inline">Last Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${accountForm.lastName.value}">aa</p>
+                        <input type="hidden" th:field="*{lastName.value}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="email.value" class="right inline">Email</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${accountForm.email.value}">aa</p>
+                        <input type="hidden" th:field="*{email.value}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="birthDate.value" class="right inline">Birth Date</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${accountForm.birthDate.value}">aa</p>
+                        <input type="hidden" th:field="*{birthDate.value}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="roles" class="right inline">Roles</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="inline-list">
+                            <li th:each="role : ${roleList}">
+                                <input type="checkbox" th:field="*{roles}" th:value="${role}" disabled="disabled"/>
+                                <input type="hidden" name="roles" th:value="${role}"
+                                       th:if="${#arrays.contains(accountForm.roles, role)}"/>
+                                <label th:for="${#ids.prev('roles')}" th:text="${role}">Admin</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="accountState" class="right inline">Account State</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel" th:text="${accountForm.accountState}">aa</p>
+                        <input type="hidden" th:field="*{accountState}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="password.value" class="right inline">password</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <p class="panel">****</p>
+                        <input type="hidden" th:field="*{password.value}"/>
+                        <input type="hidden" th:field="*{confirmPassword.value}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="button-group round">
+                            <li>
+                                <input type="submit" name="redo" class="button tiny" value="Back"/>
+                            </li>
+                            <li>
+                                <input type="submit" class="button tiny" value="Create"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

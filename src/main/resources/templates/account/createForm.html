@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
+</head>
+<body>
+<div class="row">
+    <div class="large12 columns" th:object="${accountForm}">
+        <h1>Account Form</h1>
+
+        <form method="post" th:action="@{/account/create}">
+            <div class="small-8 columns">
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="firstName.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('firstName.value')}? 'error'">First Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="text" th:field="*{firstName.value}"
+                               th:classappend="${#fields.hasErrors('firstName.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('firstName.value')}" th:errors="*{firstName.value}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="lastName.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('lastName.value')}? 'error'">Last Name</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="text" th:field="*{lastName.value}"
+                               th:classappend="${#fields.hasErrors('lastName.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('lastName.value')}" th:errors="*{lastName.value}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="email.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('email.value')}? 'error'">Email</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="email" th:field="*{email.value}"
+                               th:classappend="${#fields.hasErrors('email.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('email.value')}" th:errors="*{email.value}" class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="birthDate.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('birthDate.value')}? 'error'">Birth Date</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="date" th:field="*{birthDate.value}"
+                               th:classappend="${#fields.hasErrors('birthDate.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('birthDate.value')}" th:errors="*{birthDate.value}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="roles" class="right inline"
+                               th:classappend="${#fields.hasErrors('roles')}? 'error'">Roles</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="inline-list">
+                            <li th:each="role : ${roleList}">
+                                <input type="checkbox" th:field="*{roles}" th:value="${role}"/>
+                                <label th:for="${#ids.prev('roles')}" th:text="${role}">Admin</label>
+                            </li>
+                        </ul>
+                        <span th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="roles" class="right inline"
+                               th:classappend="${#fields.hasErrors('accountState')}? 'error'">Account State</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="inline-list">
+                            <select th:field="*{accountState}">
+                                <option th:each="accountState : ${accountStateList}" th:value="${accountState}"
+                                        th:text="${accountState}">
+                                    ENABLED
+                                </option>
+                            </select>
+                        </ul>
+                        <span th:if="${#fields.hasErrors('accountState')}" th:errors="*{accountState}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="password.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('password.value')}? 'error'">Password</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="password" th:field="*{password.value}"
+                               th:classappend="${#fields.hasErrors('password.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('password.value')}" th:errors="*{password.value}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label th:for="confirmPassword.value" class="right inline"
+                               th:classappend="${#fields.hasErrors('confirmPassword.value')}? 'error'">Password
+                            (confirm)</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="password" th:field="*{confirmPassword.value}"
+                               th:classappend="${#fields.hasErrors('confirmPassword.value')}? 'error'"/>
+                        <span th:if="${#fields.hasErrors('confirmPassword.value')}" th:errors="*{confirmPassword.value}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                    </div>
+                    <div class="small-9 columns">
+                        <ul class="button-group round">
+                            <li>
+                                <a th:href="@{/account}" class="button tiny">Back to List</a>
+                            </li>
+                            <li>
+                                <input type="submit" name="confirm" class="button tiny" value="Confirm"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
