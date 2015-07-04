@@ -18,7 +18,7 @@ public class AccountCleaner {
     AccountRepository accountRepository;
 
 
-    @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
+    @Scheduled(fixedDelay = 3600_000, initialDelay = 3600_000)
     @Transactional
     public void cleanup() {
         log.info("Delete obsolete accounts");

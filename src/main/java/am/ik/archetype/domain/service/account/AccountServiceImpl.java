@@ -1,5 +1,6 @@
 package am.ik.archetype.domain.service.account;
 
+import am.ik.archetype.domain.aspect.auditlog.Audit;
 import am.ik.archetype.domain.model.Account;
 import am.ik.archetype.domain.model.Credential;
 import am.ik.archetype.domain.model.Email;
@@ -55,6 +56,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAll(pageable);
     }
 
+    @Audit(domain = "account")
     @Override
     public Account create(Account account, Password rawPassword) {
         Credential credential = new Credential();
@@ -63,6 +65,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
+    @Audit(domain = "account")
     @Override
     public Account updateWithoutPassword(Account account, boolean unlock) {
         Assert.notNull(account.getCredential(), "Password must not be null.");
@@ -73,6 +76,7 @@ public class AccountServiceImpl implements AccountService {
         return updated;
     }
 
+    @Audit(domain = "account")
     @Override
     public Account updateWithNewPassword(Account account, Password rawPassword, boolean unlock) {
         account.getCredential().setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
@@ -83,6 +87,7 @@ public class AccountServiceImpl implements AccountService {
         return updated;
     }
 
+    @Audit(domain = "account")
     @Override
     public Account rehashIfNeeded(Account account, Password rawPassword) {
         if (systemHashAlgorithm == account.getCredential().getPassword().getAlgorithm()) {
@@ -92,6 +97,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
+    @Audit(domain = "account")
     @Override
     public void delete(Long accountId) {
         accountRepository.delete(accountId);
