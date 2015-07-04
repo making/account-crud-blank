@@ -13,14 +13,13 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @Slf4j
-public class FailedLoginAttemptServiceImpl implements FailedLoginAttemptService {
+public class FailedLoginAttemptCleaner {
     @Autowired
     FailedLoginAttemptRepository failedLoginAttemptRepository;
 
     @Value("${failedloginattempt.unlock.min:1}")
     long unlockMin;
 
-    @Override
     @Scheduled(initialDelay = 600_000, fixedRate = 600_000)
     public void cleanup() {
         log.info("Clean up ...");
