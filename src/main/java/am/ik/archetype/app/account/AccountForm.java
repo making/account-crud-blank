@@ -34,14 +34,14 @@ public class AccountForm implements Serializable {
     @NotNull
     @Valid
     private Password password;
-    @NotNull(groups = CrudMode.Create.class)
+    @NotNull
     @Valid
     private Password confirmPassword;
     @NotEmpty
     private List<Role> roles;
     @NotNull(groups = CrudMode.Update.class)
     @Null(groups = CrudMode.Create.class)
-    private AccountState accountState;
+    private AccountStatus accountStatus;
 
     private boolean locked;
 }

@@ -79,18 +79,18 @@
                 <div class="row">
                     <div class="small-3 columns">
                         <label th:for="roles" class="right inline"
-                               th:classappend="${#fields.hasErrors('accountState')}? 'error'">Account State</label>
+                               th:classappend="${#fields.hasErrors('accountStatus')}? 'error'">Account Status</label>
                     </div>
                     <div class="small-9 columns">
                         <ul class="inline-list">
-                            <select th:field="*{accountState}">
-                                <option th:each="accountState : ${accountStateList}" th:value="${accountState}"
-                                        th:text="${accountState}">
+                            <select th:field="*{accountStatus}">
+                                <option th:each="accountStatus : ${accountStatusList}" th:value="${accountStatus}"
+                                        th:text="${accountStatus}">
                                     ENABLED
                                 </option>
                             </select>
                         </ul>
-                        <span th:if="${#fields.hasErrors('accountState')}" th:errors="*{accountState}"
+                        <span th:if="${#fields.hasErrors('accountStatus')}" th:errors="*{accountStatus}"
                               class="error">error!</span>
                     </div>
                 </div>

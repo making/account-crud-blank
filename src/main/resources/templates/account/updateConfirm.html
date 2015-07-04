@@ -66,11 +66,11 @@
                 </div>
                 <div class="row">
                     <div class="small-3 columns">
-                        <label th:for="accountState" class="right inline">Account State</label>
+                        <label th:for="accountStatus" class="right inline">Account Status</label>
                     </div>
                     <div class="small-9 columns">
-                        <p class="panel" th:text="${accountForm.accountState}">aa</p>
-                        <input type="hidden" th:field="*{accountState}"/>
+                        <p class="panel" th:text="${accountForm.getAccountStatus()}">aa</p>
+                        <input type="hidden" th:field="*{accountStatus}"/>
                     </div>
                 </div>
                 <div class="row">

@@ -1,11 +1,11 @@
 package am.ik.archetype.domain.service.account;
 
 import am.ik.archetype.domain.model.Account;
+import am.ik.archetype.domain.model.Credential;
 import am.ik.archetype.domain.model.Email;
 import am.ik.archetype.domain.model.Password;
 import am.ik.archetype.domain.repository.account.AccountRepository;
 import am.ik.archetype.domain.repository.login.FailedLoginAttemptRepository;
-import am.ik.archetype.domain.service.login.FailedLoginAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -57,13 +57,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account create(Account account, Password rawPassword) {
-        account.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        Credential credential = new Credential();
+        credential.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        account.setCredential(credential);
         return accountRepository.save(account);
     }
 
     @Override
     public Account updateWithoutPassword(Account account, boolean unlock) {
-        Assert.notNull(account.getPassword(), "Password must not be null.");
+        Assert.notNull(account.getCredential(), "Password must not be null.");
         Account updated = accountRepository.save(account);
         if (unlock) {
             failedLoginAttemptRepository.deleteByAccountId(account.getAccountId());
@@ -73,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account updateWithNewPassword(Account account, Password rawPassword, boolean unlock) {
-        account.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        account.getCredential().setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
         Account updated = accountRepository.save(account);
         if (unlock) {
             failedLoginAttemptRepository.deleteByAccountId(account.getAccountId());
@@ -83,10 +85,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account rehashIfNeeded(Account account, Password rawPassword) {
-        if (systemHashAlgorithm == account.getPassword().getAlgorithm()) {
+        if (systemHashAlgorithm == account.getCredential().getPassword().getAlgorithm()) {
             return account;
         }
-        account.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        account.getCredential().setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
         return accountRepository.save(account);
     }
 
@@ -98,6 +100,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Override
     public boolean isLocked(Account account) {
-        return account.isLocked(failedLoginAttemptThreshold);
+        return failedLoginAttemptRepository.countByAccountId(account.getAccountId()) >= failedLoginAttemptThreshold;
     }
 }

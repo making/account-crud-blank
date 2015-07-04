@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Configuration
 @EntityScan(basePackages = "am.ik.archetype.domain.model")
@@ -49,11 +48,13 @@ public class AppConfig {
                 Account account = new Account();
                 account.setFirstName(new Name("Taro"));
                 account.setLastName(new Name("Yamada"));
-                account.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
+                account.setCredential(credential);
                 account.setEmail(new Email("yamada@example.com"));
                 account.setBirthDate(new BirthDate(LocalDate.now()));
                 account.setRoles(Arrays.asList(Role.USER, Role.ADMIN));
-                account.setAccountState(AccountState.ENABLED);
+                account.setAccountStatus(AccountStatus.ENABLED);
                 accountRepository.saveAndFlush(account);
             }
 
@@ -61,11 +62,13 @@ public class AppConfig {
                 Account account = new Account();
                 account.setFirstName(new Name("Jiro"));
                 account.setLastName(new Name("Sasaki"));
-                account.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
+                account.setCredential(credential);
                 account.setEmail(new Email("sasaki@example.com"));
                 account.setBirthDate(new BirthDate(LocalDate.now()));
                 account.setRoles(Arrays.asList(Role.USER));
-                account.setAccountState(AccountState.ENABLED);
+                account.setAccountStatus(AccountStatus.ENABLED);
                 accountRepository.saveAndFlush(account);
 
                 failedLoginAttemptRepository.save(Stream.of(0, 1, 2, 3, 4, 5, 6, 7, 8).map(i -> {

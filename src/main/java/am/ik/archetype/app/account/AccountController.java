@@ -1,11 +1,10 @@
 package am.ik.archetype.app.account;
 
 import am.ik.archetype.domain.model.Account;
-import am.ik.archetype.domain.model.AccountState;
-import am.ik.archetype.domain.model.Password;
+import am.ik.archetype.domain.model.AccountStatus;
 import am.ik.archetype.domain.model.Role;
-import am.ik.archetype.domain.validation.groups.CrudMode;
 import am.ik.archetype.domain.service.account.AccountService;
+import am.ik.archetype.domain.validation.groups.CrudMode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,8 +41,8 @@ public class AccountController {
     }
 
     @ModelAttribute
-    AccountState[] accountStates() {
-        return AccountState.values();
+    AccountStatus[] accountStatusList() {
+        return AccountStatus.values();
     }
 
     @RequestMapping
@@ -78,7 +77,7 @@ public class AccountController {
         }
         Account account = new Account();
         BeanUtils.copyProperties(form, account);
-        account.setAccountState(AccountState.INIT);
+        account.setAccountStatus(AccountStatus.INIT);
         accountService.create(account, form.getPassword());
         return "redirect:/account";
     }
@@ -112,13 +111,11 @@ public class AccountController {
             return "account/createForm";
         }
         Account account = accountService.findOne(form.getAccountId());
-        Password currentPassword = account.getPassword();
         BeanUtils.copyProperties(form, account);
         boolean unlock = !form.isLocked();
-        if (form.getPassword() != null) {
+        if (form.getPassword().getValue() != null) {
             accountService.updateWithNewPassword(account, form.getPassword(), unlock);
         } else {
-            account.setPassword(currentPassword);
             accountService.updateWithoutPassword(account, unlock);
         }
         return "redirect:/account";

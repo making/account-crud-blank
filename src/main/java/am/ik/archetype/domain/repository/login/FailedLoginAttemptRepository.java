@@ -10,4 +10,7 @@ public interface FailedLoginAttemptRepository extends JpaRepository<FailedLoginA
     @Modifying
     @Query(value = "DELETE FROM FailedLoginAttempt x WHERE x.attemptId.account.accountId = :accountId")
     int deleteByAccountId(@Param("accountId") Long accountId);
+
+    @Query(value = "SELECT COUNT(x) FROM FailedLoginAttempt x WHERE x.attemptId.account.accountId = :accountId")
+    long countByAccountId(@Param("accountId") Long accountId);
 }

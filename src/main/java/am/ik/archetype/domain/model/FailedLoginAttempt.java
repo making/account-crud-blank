@@ -6,11 +6,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Entity
 @Table(indexes = {
-        @Index(columnList = "account"),
+        @Index(columnList = "account_id"),
         @Index(columnList = "attemptTime")
 })
 @Data
@@ -23,7 +22,7 @@ public class FailedLoginAttempt implements Serializable {
     public static class Id implements Serializable {
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "account")
+        @JoinColumn(name = "account_id")
         private Account account;
 
         @NotNull

@@ -22,7 +22,7 @@
                 <th>Email</th>
                 <th>BirthDate</th>
                 <th>Roles</th>
-                <th>State</th>
+                <th>Status</th>
                 <th>Locked</th>
                 <th>Edit</th>
             </tr>
@@ -37,7 +37,7 @@
                     <span th:each="role : ${account.roles}" th:text="${role}" class="label secondary">USER</span>
                 </td>
                 <td>
-                    <span th:text="${account.accountState}" class="label"></span>
+                    <span th:text="${account.accountStatus}" class="label"></span>
                 </td>
                 <td>
                     <span th:text="${beans.accountServiceImpl.isLocked(account)}"></span>

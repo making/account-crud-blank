@@ -7,11 +7,11 @@ import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Getter
-public enum AccountState {
+public enum AccountStatus {
     INIT("INT"), DISABLED("DSB"), ENABLED("ENB"), WILL_BE_DELETE("WBD"), UNKNOWN("UKW");
     private final String code;
 
-    public static AccountState fromCode(String code) {
+    public static AccountStatus fromCode(String code) {
         return Stream.of(values())
                 .filter(v -> v.getCode().equals(code))
                 .findAny()
