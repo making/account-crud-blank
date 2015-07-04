@@ -10,7 +10,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,10 +93,4 @@ public class AuditLogAspect {
         return Optional.of(beanWrapper.getPropertyValue(auditTarget.value()));
     }
 
-    @Scheduled(initialDelay = 3600_000, fixedRate = 3600_000)
-    void report() {
-        auditLogRepository.findAll().forEach(
-                System.out::println
-        );
-    }
 }
