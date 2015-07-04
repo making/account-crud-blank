@@ -96,6 +96,17 @@
                 </div>
                 <div class="row">
                     <div class="small-3 columns">
+                        <label th:for="locked1" class="right inline"
+                               th:classappend="${#fields.hasErrors('locked')}? 'error'">Locked</label>
+                    </div>
+                    <div class="small-9 columns">
+                        <input type="checkbox" th:field="*{locked}" th:value="${accountForm.locked}"/>
+                        <span th:if="${#fields.hasErrors('locked')}" th:errors="*{locked}"
+                              class="error">error!</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
                         <label th:for="password.value" class="right inline"
                                th:classappend="${#fields.hasErrors('password.value')}? 'error'">Password</label>
                     </div>

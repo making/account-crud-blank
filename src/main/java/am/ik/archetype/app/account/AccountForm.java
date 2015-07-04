@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,11 +34,14 @@ public class AccountForm implements Serializable {
     @NotNull
     @Valid
     private Password password;
-    @NotNull
+    @NotNull(groups = CrudMode.Create.class)
     @Valid
     private Password confirmPassword;
     @NotEmpty
     private List<Role> roles;
-    @NotNull
+    @NotNull(groups = CrudMode.Update.class)
+    @Null(groups = CrudMode.Create.class)
     private AccountState accountState;
+
+    private boolean locked;
 }

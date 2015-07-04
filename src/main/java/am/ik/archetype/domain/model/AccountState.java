@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @Getter
 public enum AccountState {
-    INIT("INT"), DISABLED("DSB"), ENABLED("ENB"), LOCKED("LKD"), WILL_BE_DELETE("WBD"), UNKNOWN("UKW");
+    INIT("INT"), DISABLED("DSB"), ENABLED("ENB"), WILL_BE_DELETE("WBD"), UNKNOWN("UKW");
     private final String code;
 
     public static AccountState fromCode(String code) {

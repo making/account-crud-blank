@@ -2,6 +2,7 @@ package am.ik.archetype.app.account;
 
 import am.ik.archetype.domain.model.Account;
 import am.ik.archetype.domain.model.AccountState;
+import am.ik.archetype.domain.model.Password;
 import am.ik.archetype.domain.model.Role;
 import am.ik.archetype.domain.validation.groups.CrudMode;
 import am.ik.archetype.domain.service.account.AccountService;
@@ -27,6 +28,8 @@ import javax.validation.groups.Default;
 public class AccountController {
     @Autowired
     AccountService accountService;
+    @Autowired
+    LockedValidator lockedValidator;
 
     @ModelAttribute
     AccountForm accountForm() {
@@ -75,6 +78,7 @@ public class AccountController {
         }
         Account account = new Account();
         BeanUtils.copyProperties(form, account);
+        account.setAccountState(AccountState.INIT);
         accountService.create(account, form.getPassword());
         return "redirect:/account";
     }
@@ -83,6 +87,7 @@ public class AccountController {
     String updateForm(@RequestParam Long accountId, AccountForm form, Model model) {
         Account account = accountService.findOne(accountId);
         BeanUtils.copyProperties(account, form);
+        form.setLocked(accountService.isLocked(account));
         return "account/updateForm";
     }
 
@@ -93,6 +98,7 @@ public class AccountController {
 
     @RequestMapping(value = "update", method = RequestMethod.POST, params = "confirm")
     String updateConfirm(@Validated({CrudMode.Update.class, Default.class}) AccountForm form, BindingResult bindingResult) {
+        lockedValidator.validate(form, bindingResult);
         if (bindingResult.hasErrors()) {
             return "account/updateForm";
         }
@@ -101,12 +107,20 @@ public class AccountController {
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
     String update(@Validated({CrudMode.Update.class, Default.class}) AccountForm form, BindingResult bindingResult) {
+        lockedValidator.validate(form, bindingResult);
         if (bindingResult.hasErrors()) {
             return "account/createForm";
         }
         Account account = accountService.findOne(form.getAccountId());
+        Password currentPassword = account.getPassword();
         BeanUtils.copyProperties(form, account);
-        accountService.update(account, form.getPassword());
+        boolean unlock = !form.isLocked();
+        if (form.getPassword() != null) {
+            accountService.updateWithNewPassword(account, form.getPassword(), unlock);
+        } else {
+            account.setPassword(currentPassword);
+            accountService.updateWithoutPassword(account, unlock);
+        }
         return "redirect:/account";
     }
 

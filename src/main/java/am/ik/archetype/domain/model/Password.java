@@ -1,5 +1,6 @@
 package am.ik.archetype.domain.model;
 
+import am.ik.archetype.domain.validation.groups.CrudMode;
 import am.ik.archetype.infra.password.HashAlgorithmAttributeConverter;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,8 +17,8 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Password implements Serializable {
-    @NotNull
-    @Size(min = 6, max = 128)
+    @NotNull(groups = CrudMode.Create.class)
+    @Size(min = 6, max = 128, groups = CrudMode.Create.class)
     private String value;
 
     @NotNull

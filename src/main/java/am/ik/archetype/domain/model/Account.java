@@ -2,6 +2,7 @@ package am.ik.archetype.domain.model;
 
 import am.ik.archetype.infra.account.AccountStatusAttributeConverter;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -11,7 +12,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(indexes = {
+        @Index(columnList = "email", unique = true),
+        @Index(columnList = "accountState")
+})
 @Data
+@ToString(exclude = "failedLoginAttempts")
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +56,14 @@ public class Account implements Serializable {
     @NotNull
     @Convert(converter = AccountStatusAttributeConverter.class)
     private AccountState accountState;
+
+    @OneToMany(mappedBy = "attemptId.account", cascade = CascadeType.ALL)
+    private List<FailedLoginAttempt> failedLoginAttempts;
+
     @Version
     private Long version;
+
+    public boolean isLocked(int threshold) {
+        return this.failedLoginAttempts.size() >= threshold;
+    }
 }

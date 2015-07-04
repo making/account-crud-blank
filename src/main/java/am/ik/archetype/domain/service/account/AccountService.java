@@ -17,9 +17,13 @@ public interface AccountService {
 
     Account create(Account account, Password rawPassword);
 
-    Account update(Account account, Password rawPassword);
+    Account updateWithoutPassword(Account account, boolean unlock);
+
+    Account updateWithNewPassword(Account account, Password rawPassword, boolean unlock);
 
     Account rehashIfNeeded(Account account, Password rawPassword);
 
     void delete(Long accountId);
+
+    boolean isLocked(Account account);
 }
