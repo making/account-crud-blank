@@ -2,6 +2,7 @@ package am.ik.archetype;
 
 import am.ik.archetype.domain.model.*;
 import am.ik.archetype.domain.repository.account.AccountRepository;
+import am.ik.archetype.domain.repository.credential.CredentialRepository;
 import am.ik.archetype.domain.repository.login.FailedLoginAttemptRepository;
 import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,49 +43,56 @@ public class AppConfig {
     }
 
     @Bean
-    CommandLineRunner init(AccountRepository accountRepository, FailedLoginAttemptRepository failedLoginAttemptRepository) {
+    CommandLineRunner init(AccountRepository accountRepository,
+                           CredentialRepository credentialRepository,
+                           FailedLoginAttemptRepository failedLoginAttemptRepository) {
         return (args) -> {
             {
                 Account account = new Account();
                 account.setFirstName(new Name("Toshiaki"));
                 account.setLastName(new Name("Maki"));
-                Credential credential = new Credential();
-                credential.setPassword(Password.raw("password").encode(passwordEncoder(), systemHashAlgorithm()));
-                account.setCredential(credential);
                 account.setEmail(new Email("maki@example.com"));
                 account.setBirthDate(new BirthDate(LocalDate.now()));
                 account.setRoles(Arrays.asList(Role.USER, Role.ADMIN));
                 account.setAccountStatus(AccountStatus.ENABLED);
-                accountRepository.saveAndFlush(account);
+
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("password").encode(passwordEncoder(), systemHashAlgorithm()));
+                credential.setAccount(account);
+
+                credentialRepository.saveAndFlush(credential);
             }
 
             {
                 Account account = new Account();
                 account.setFirstName(new Name("Taro"));
                 account.setLastName(new Name("Yamada"));
-                Credential credential = new Credential();
-                credential.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
-                account.setCredential(credential);
                 account.setEmail(new Email("yamada@example.com"));
                 account.setBirthDate(new BirthDate(LocalDate.now()));
                 account.setRoles(Arrays.asList(Role.USER, Role.ADMIN));
                 account.setAccountStatus(AccountStatus.ENABLED);
-                accountRepository.saveAndFlush(account);
+
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("password").encode(passwordEncoder(), systemHashAlgorithm()));
+                credential.setAccount(account);
+
+                credentialRepository.saveAndFlush(credential);
             }
 
             {
                 Account account = new Account();
                 account.setFirstName(new Name("Jiro"));
                 account.setLastName(new Name("Sasaki"));
-                Credential credential = new Credential();
-                credential.setPassword(Password.raw("pass").encode(passwordEncoder(), systemHashAlgorithm()));
-                account.setCredential(credential);
                 account.setEmail(new Email("sasaki@example.com"));
                 account.setBirthDate(new BirthDate(LocalDate.now()));
                 account.setRoles(Arrays.asList(Role.USER));
                 account.setAccountStatus(AccountStatus.ENABLED);
-                accountRepository.saveAndFlush(account);
 
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("password").encode(passwordEncoder(), systemHashAlgorithm()));
+                credential.setAccount(account);
+
+                credentialRepository.saveAndFlush(credential);
                 failedLoginAttemptRepository.save(Stream.of(0, 1, 2, 3, 4, 5, 6, 7, 8).map(i -> {
                     FailedLoginAttempt attempt = new FailedLoginAttempt();
                     FailedLoginAttempt.Id id = new FailedLoginAttempt.Id();

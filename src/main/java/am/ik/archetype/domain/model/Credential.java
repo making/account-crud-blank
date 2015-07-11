@@ -1,22 +1,17 @@
 package am.ik.archetype.domain.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
-@ToString(exclude = "account")
-@EqualsAndHashCode(exclude = "account")
 public class Credential implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long credentialsId;
-    @OneToOne(mappedBy = "credential", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 
     @Embedded

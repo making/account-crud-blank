@@ -6,6 +6,7 @@ import am.ik.archetype.domain.model.Credential;
 import am.ik.archetype.domain.model.Email;
 import am.ik.archetype.domain.model.Password;
 import am.ik.archetype.domain.repository.account.AccountRepository;
+import am.ik.archetype.domain.repository.credential.CredentialRepository;
 import am.ik.archetype.domain.repository.login.FailedLoginAttemptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,13 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 @Service
 @Transactional
 public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    CredentialRepository credentialRepository;
     @Autowired
     FailedLoginAttemptRepository failedLoginAttemptRepository;
     @Autowired
@@ -61,14 +63,13 @@ public class AccountServiceImpl implements AccountService {
     public Account create(Account account, Password rawPassword) {
         Credential credential = new Credential();
         credential.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
-        account.setCredential(credential);
-        return accountRepository.save(account);
+        credential.setAccount(account);
+        return credentialRepository.save(credential).getAccount();
     }
 
     @Audit(domain = "account")
     @Override
     public Account updateWithoutPassword(Account account, boolean unlock) {
-        Assert.notNull(account.getCredential(), "Password must not be null.");
         Account updated = accountRepository.save(account);
         if (unlock) {
             failedLoginAttemptRepository.deleteByAccountId(account.getAccountId());
@@ -79,22 +80,22 @@ public class AccountServiceImpl implements AccountService {
     @Audit(domain = "account")
     @Override
     public Account updateWithNewPassword(Account account, Password rawPassword, boolean unlock) {
-        account.getCredential().setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
-        Account updated = accountRepository.save(account);
-        if (unlock) {
-            failedLoginAttemptRepository.deleteByAccountId(account.getAccountId());
-        }
-        return updated;
+        Credential credential = credentialRepository.findByAccount_email_value(account.getEmail().getValue())
+                .orElseThrow(() -> new IllegalArgumentException("no such user!"));
+        credential.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        return updateWithoutPassword(account, unlock);
     }
 
     @Audit(domain = "account")
     @Override
     public Account rehashIfNeeded(Account account, Password rawPassword) {
-        if (systemHashAlgorithm == account.getCredential().getPassword().getAlgorithm()) {
+        Credential credential = credentialRepository.findByAccount_email_value(account.getEmail().getValue())
+                .orElseThrow(() -> new IllegalArgumentException("no such user!"));
+        if (systemHashAlgorithm == credential.getPassword().getAlgorithm()) {
             return account;
         }
-        account.getCredential().setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
-        return accountRepository.save(account);
+        credential.setPassword(rawPassword.encode(passwordEncoder, systemHashAlgorithm));
+        return account;
     }
 
     @Audit(domain = "account")

@@ -51,11 +51,6 @@ public class Account implements Serializable {
     @Convert(converter = AccountStatusAttributeConverter.class)
     private AccountStatus accountStatus;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @NotNull
-    @JoinColumn(name = "credential_id")
-    private Credential credential;
-
     @OneToMany(mappedBy = "attemptId.account", cascade = CascadeType.ALL)
     private List<FailedLoginAttempt> failedLoginAttempts;
 
