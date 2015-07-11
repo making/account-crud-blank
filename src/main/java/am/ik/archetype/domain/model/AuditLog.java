@@ -1,6 +1,9 @@
 package am.ik.archetype.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +12,9 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuditLog implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

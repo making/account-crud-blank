@@ -2,6 +2,7 @@ package am.ik.archetype.domain.aspect.auditlog;
 
 import am.ik.archetype.domain.model.AuditLog;
 import am.ik.archetype.domain.repository.auditlog.AuditLogRepository;
+import am.ik.archetype.domain.service.userdetails.UserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,9 +11,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Parameter;
@@ -27,7 +28,6 @@ public class AuditLogAspect {
     @Autowired
     AuditLogRepository auditLogRepository;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Around("execution(@am.ik.archetype.domain.aspect.auditlog.Audit * * (..)) && @annotation(audit)")
     public Object audit(ProceedingJoinPoint point, Audit audit) throws Throwable {
         Object result = null;
@@ -36,7 +36,6 @@ public class AuditLogAspect {
         String domain = StringUtils.isEmpty(audit.domain()) ? point.getTarget().getClass().getSimpleName() :
                 audit.domain();
         AuditLog auditLog = new AuditLog();
-        auditLog.setActor("bar");
         auditLog.setAction(action);
         auditLog.setDomain(domain);
         auditLog.setAuditTime(Timestamp.valueOf(LocalDateTime.now()));
@@ -57,9 +56,29 @@ public class AuditLogAspect {
                     auditLog.setTarget(x.toString());
                 });
             }
+
+            String actor = getUsername();
+            if (actor != null) {
+                auditLog.setActor(actor);
+            } else {
+                auditLog.setActor("system");
+            }
             auditLogRepository.save(auditLog);
         }
         return result;
+    }
+
+    public static String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                return UserDetails.class.cast(principal).getAccount().getAccountId().toString();
+            }
+            return principal.toString();
+        }
+        return null;
     }
 
     Optional<Object> getTargetFromArgs(MethodSignature signature, Object[] args) {

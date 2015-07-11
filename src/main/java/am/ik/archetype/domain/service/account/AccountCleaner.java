@@ -1,5 +1,6 @@
 package am.ik.archetype.domain.service.account;
 
+import am.ik.archetype.domain.aspect.auditlog.Audit;
 import am.ik.archetype.domain.model.Account;
 import am.ik.archetype.domain.model.AccountStatus;
 import am.ik.archetype.domain.repository.account.AccountRepository;
@@ -18,6 +19,7 @@ public class AccountCleaner {
     AccountRepository accountRepository;
 
 
+    @Audit(domain = "account")
     @Scheduled(fixedDelay = 3600_000, initialDelay = 3600_000)
     @Transactional
     public void cleanup() {

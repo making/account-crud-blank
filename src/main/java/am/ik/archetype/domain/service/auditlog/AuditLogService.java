@@ -6,4 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface AuditLogService {
     Page<AuditLog> findAll(Pageable pageable);
+
+    AuditLog register(AuditLog auditLog);
+
+    void report();
 }

@@ -46,6 +46,20 @@ public class AppConfig {
         return (args) -> {
             {
                 Account account = new Account();
+                account.setFirstName(new Name("Toshiaki"));
+                account.setLastName(new Name("Maki"));
+                Credential credential = new Credential();
+                credential.setPassword(Password.raw("password").encode(passwordEncoder(), systemHashAlgorithm()));
+                account.setCredential(credential);
+                account.setEmail(new Email("maki@example.com"));
+                account.setBirthDate(new BirthDate(LocalDate.now()));
+                account.setRoles(Arrays.asList(Role.USER, Role.ADMIN));
+                account.setAccountStatus(AccountStatus.ENABLED);
+                accountRepository.saveAndFlush(account);
+            }
+
+            {
+                Account account = new Account();
                 account.setFirstName(new Name("Taro"));
                 account.setLastName(new Name("Yamada"));
                 Credential credential = new Credential();
