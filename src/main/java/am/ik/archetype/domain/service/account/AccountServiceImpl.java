@@ -101,7 +101,7 @@ public class AccountServiceImpl implements AccountService {
     @Audit(domain = "account")
     @Override
     public void delete(Long accountId) {
-        accountRepository.delete(accountId);
+        credentialRepository.deleteByAccount_accountId(accountId);
     }
 
     @Transactional(readOnly = true)

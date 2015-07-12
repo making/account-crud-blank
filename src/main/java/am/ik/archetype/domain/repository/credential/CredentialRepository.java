@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CredentialRepository extends JpaRepository<Credential, Long> {
     Optional<Credential> findByAccount_email_value(String email);
+
+    int deleteByAccount_accountId(Long accountId);
 }
