@@ -3,7 +3,6 @@ package am.ik.archetype.domain.aspect.auditlog;
 import am.ik.archetype.domain.model.AuditLog;
 import am.ik.archetype.domain.repository.auditlog.AuditLogRepository;
 import am.ik.archetype.domain.service.userdetails.UserDetails;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,12 +22,11 @@ import java.util.Optional;
 
 @Aspect
 @Component
-@Slf4j
 public class AuditLogAspect {
     @Autowired
     AuditLogRepository auditLogRepository;
 
-    @Around("execution(@am.ik.archetype.domain.aspect.auditlog.Audit * * (..)) && @annotation(audit)")
+    @Around("execution(* * (..)) && @annotation(audit)")
     public Object audit(ProceedingJoinPoint point, Audit audit) throws Throwable {
         Object result = null;
         String action = StringUtils.isEmpty(audit.action()) ? point.getSignature().getName() :
