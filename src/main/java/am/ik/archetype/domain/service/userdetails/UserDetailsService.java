@@ -25,11 +25,10 @@ public class UserDetailsService implements org.springframework.security.core.use
         Credential credential = credentialRepository.findByAccount_email_value(s)
                 .orElseThrow(() -> new UsernameNotFoundException(s + " is not found."));
         Account account = credential.getAccount();
-        boolean enabled = account.getAccountStatus() == AccountStatus.ENABLED || account.getAccountStatus() == AccountStatus.INIT;
         return UserDetails.builder()
                 .username(s)
                 .password(credential.getPassword().getValue())
-                .enabled(enabled)
+                .enabled(account.isEnabled())
                 .authorities(account.getRoles().stream()
                         .map(Autority::new)
                         .collect(Collectors.toList()))

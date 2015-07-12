@@ -56,4 +56,10 @@ public class Account implements Serializable {
 
     @Version
     private Long version;
+
+    @Transient
+    public boolean isEnabled() {
+        return this.accountStatus == AccountStatus.ENABLED || this.accountStatus == AccountStatus.INIT;
+    }
+
 }
