@@ -1,6 +1,6 @@
 package am.ik.archetype.domain.validation;
 
-import am.ik.archetype.domain.model.Email;
+import am.ik.archetype.domain.model.vo.Email;
 import am.ik.archetype.domain.service.account.AccountService;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

@@ -1,6 +1,7 @@
 package am.ik.archetype;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
@@ -41,13 +42,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
         @Autowired
-        UserDetailsService userDetailsService;
-        @Autowired
         PasswordEncoder passwordEncoder;
+
+        @Bean
+        UserDetailsService userDetailsService() {
+            return new am.ik.archetype.domain.service.userdetails.UserDetailsService();
+        }
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userDetailsService)
+            auth.userDetailsService(userDetailsService())
                     .passwordEncoder(passwordEncoder);
         }
     }

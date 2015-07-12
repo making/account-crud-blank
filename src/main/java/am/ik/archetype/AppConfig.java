@@ -1,6 +1,10 @@
 package am.ik.archetype;
 
 import am.ik.archetype.domain.model.*;
+import am.ik.archetype.domain.model.vo.BirthDate;
+import am.ik.archetype.domain.model.vo.Email;
+import am.ik.archetype.domain.model.vo.Name;
+import am.ik.archetype.domain.model.vo.Password;
 import am.ik.archetype.domain.repository.account.AccountRepository;
 import am.ik.archetype.domain.repository.credential.CredentialRepository;
 import am.ik.archetype.domain.repository.login.FailedLoginAttemptRepository;

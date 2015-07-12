@@ -1,5 +1,6 @@
 package am.ik.archetype.domain.model;
 
+import am.ik.archetype.domain.model.vo.Password;
 import lombok.Data;
 
 import javax.persistence.*;

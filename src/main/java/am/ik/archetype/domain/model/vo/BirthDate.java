@@ -1,4 +1,4 @@
-package am.ik.archetype.domain.model;
+package am.ik.archetype.domain.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,5 +1,8 @@
 package am.ik.archetype.domain.model;
 
+import am.ik.archetype.domain.model.vo.BirthDate;
+import am.ik.archetype.domain.model.vo.Email;
+import am.ik.archetype.domain.model.vo.Name;
 import am.ik.archetype.infra.account.AccountStatusAttributeConverter;
 import lombok.Data;
 import lombok.ToString;

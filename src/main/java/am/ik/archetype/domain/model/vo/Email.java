@@ -1,5 +1,7 @@
-package am.ik.archetype.domain.model;
+package am.ik.archetype.domain.model.vo;
 
+import am.ik.archetype.domain.validation.UnusedEmail;
+import am.ik.archetype.domain.validation.groups.CrudMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +15,11 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Name implements Serializable {
+public class Email implements Serializable {
     @NotNull
     @Size(min = 1, max = 128)
+    @org.hibernate.validator.constraints.Email
+    @UnusedEmail(groups = CrudMode.Create.class)
     private String value;
 
     @Override

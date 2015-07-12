@@ -1,18 +1,15 @@
 package am.ik.archetype.domain.service.userdetails;
 
 import am.ik.archetype.domain.model.Account;
-import am.ik.archetype.domain.model.AccountStatus;
 import am.ik.archetype.domain.model.Credential;
 import am.ik.archetype.domain.repository.credential.CredentialRepository;
 import am.ik.archetype.domain.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
-@Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
     @Autowired
     AccountService accountService;

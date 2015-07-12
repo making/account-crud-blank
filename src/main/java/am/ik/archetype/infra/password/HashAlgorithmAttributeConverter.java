@@ -1,6 +1,6 @@
 package am.ik.archetype.infra.password;
 
-import am.ik.archetype.domain.model.Password;
+import am.ik.archetype.domain.model.vo.Password;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

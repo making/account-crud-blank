@@ -1,6 +1,6 @@
 package am.ik.archetype.domain.validation;
 
-import am.ik.archetype.domain.model.Email;
+import am.ik.archetype.domain.model.vo.Email;
 import am.ik.archetype.domain.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

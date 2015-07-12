@@ -1,6 +1,10 @@
 package am.ik.archetype.app.account;
 
 import am.ik.archetype.domain.model.*;
+import am.ik.archetype.domain.model.vo.BirthDate;
+import am.ik.archetype.domain.model.vo.Email;
+import am.ik.archetype.domain.model.vo.Name;
+import am.ik.archetype.domain.model.vo.Password;
 import am.ik.archetype.domain.validation.Confirm;
 import am.ik.archetype.domain.validation.UnusedEmailOtherThanMe;
 import am.ik.archetype.domain.validation.groups.CrudMode;
