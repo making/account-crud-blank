@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
     public Account updateWithoutPassword(Account account, boolean unlock) {
         Account updated = accountRepository.save(account);
         if (unlock) {
-            failedLoginAttemptRepository.deleteByAccountId(account.getAccountId());
+            failedLoginAttemptRepository.deleteByAttemptId_account_accountId(account.getAccountId());
         }
         return updated;
     }
@@ -107,6 +107,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Override
     public boolean isLocked(Account account) {
-        return failedLoginAttemptRepository.countByAccountId(account.getAccountId()) >= failedLoginAttemptThreshold;
+        return failedLoginAttemptRepository.countByAttemptId_account_accountId(account.getAccountId()) >= failedLoginAttemptThreshold;
     }
 }
