@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+        >
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/foundation/5.5.1/css/foundation.min.css"
+          th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
+</head>
+<body>
+<nav class="top-bar docs-bar hide-for-small" data-topbar="">
+    <ul class="title-area">
+        <li class="name">
+            <h1><a th:href="@{/account}">Account Admin</a></h1>
+        </li>
+    </ul>
+
+    <section class="top-bar-section">
+        <ul class="right">
+            <li class="divider"></li>
+            <li>
+                <a th:href="@{/account/update(form,accountId=${#authentication.principal.account.accountId})}" class="">
+                    <span th:text="${#authentication.principal.account.firstName} + ' ' + ${#authentication.principal.account.firstName}">Aaa Bbb</span>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="has-form">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="small button" value="Logout"/>
+                </form>
+            </li>
+        </ul>
+    </section>
+</nav>
+
+<section class="main">
+    <div class="row">
+        <div class="large-2 medium-4 columns">
+            <div class="sidebar">
+                <nav>
+                    <ul class="side-nav">
+                        <li><a href="#">Account</a></li>
+                        <li><a href="#">Access Token</a></li>
+                        <li><a href="#">API Client</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="large-10 medium-8 columns">
+            <div layout:fragment="content"></div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

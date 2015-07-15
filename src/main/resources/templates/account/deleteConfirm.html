@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,8 +9,8 @@
     <link rel="stylesheet" th:href="@{/webjars/foundation/5.5.2/css/foundation.min.css}"/>
 </head>
 <body>
-<div class="row">
-    <div class="large12 columns" th:object="${accountForm}">
+<div layout:fragment="content">
+    <div th:object="${accountForm}">
         <h1>Account Delete</h1>
 
         <form method="post" th:action="@{/account/delete}">
