@@ -21,8 +21,8 @@
         <ul class="right">
             <li class="divider"></li>
             <li>
-                <a th:href="@{/account/update(form,accountId=${#authentication.principal.account.accountId})}" class="">
-                    <span th:text="${#authentication.principal.account.firstName} + ' ' + ${#authentication.principal.account.firstName}">Aaa Bbb</span>
+                <a th:href="@{/account/update(form,accountId=${#authentication.principal.account.accountId})}">
+                    <span th:text="${#authentication.principal.account.firstName} + ' ' + ${#authentication.principal.account.lastName}">Aaa Bbb</span>
                 </a>
             </li>
             <li class="divider"></li>
